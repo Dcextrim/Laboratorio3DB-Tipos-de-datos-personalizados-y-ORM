@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if renta %}Editar{% else %}Nueva{% endif %} Renta</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>{% if renta %}Editar{% else %}Registrar nueva{% endif %} renta</h1>
+
+    <form method="POST" action="{{ request.path }}">
+        <label>Cliente:</label>
+        <select name="cliente">
+            {% for c in clientes %}
+            <option value="{{ c.id_cliente }}"
+                {% if renta and renta.id_cliente == c.id_cliente %}selected{% endif %}>
+                {{ c.nombre_cliente }}
+            </option>
+            {% endfor %}
+        </select><br>
+
+        <label>Instrumento:</label>
+        <select name="instrumento">
+            {% for i in instrumentos %}
+            <option value="{{ i.id_instrumento }}"
+                {% if renta and renta.id_instrumento == i.id_instrumento %}selected{% endif %}>
+                {{ i.nombre_instrumento }}
+            </option>
+            {% endfor %}
+        </select><br>
+
+        <label>Fecha adquisición:</label>
+        <input type="date" name="fecha_adq"
+            value="{{ detalle.fecha_adquisición if detalle else '' }}"><br>
+
+        <label>Fecha devolución:</label>
+        <input type="date" name="fecha_dev"
+            value="{{ detalle.fecha_devolucion if detalle else '' }}"><br>
+
+        <label>Estado:</label>
+        <select name="estado">
+            <option value="Activa"
+                {% if detalle and detalle.estado_renta == 'Activa' %}selected{% endif %}>Activa</option>
+            <option value="Finalizada"
+                {% if detalle and detalle.estado_renta == 'Finalizada' %}selected{% endif %}>Finalizada</option>
+            <option value="Cancelada"
+                {% if detalle and detalle.estado_renta == 'Cancelada' %}selected{% endif %}>Cancelada</option>
+        </select><br>
+
+        <label>Monto:</label>
+        <input type="number" step="0.01" name="monto"
+            value="{{ detalle.monto_total if detalle else '' }}"><br>
+
+        <button type="submit">{% if renta %}Actualizar{% else %}Registrar{% endif %}</button>
+    </form>
+</body>
+</html>

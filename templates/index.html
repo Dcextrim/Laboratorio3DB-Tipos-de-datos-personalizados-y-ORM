@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Rentas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+<body>
+    <h1>Rentas registradas</h1>
+    <a href="{{ url_for('nueva_renta') }}">Nueva Renta</a>
+    <table border="1">
+        <tr>
+            <th>ID</th><th>Instrumento</th><th>Tipo</th><th>Cliente</th>
+            <th>Fecha Adq.</th><th>Devolución</th><th>Estado</th><th>Monto</th><th>Acciones</th>
+        </tr>
+        {% for r in rentas %}
+        <tr>
+            <td>{{ r.id_renta }}</td>
+            <td>{{ r.nombre_instrumento }}</td>
+            <td>{{ r.tipo_instrumento }}</td>
+            <td>{{ r.nombre_cliente }}</td>
+            <td>{{ r.fecha_adquisición }}</td>
+            <td>{{ r.fecha_devolucion }}</td>
+            <td>{{ r.estado_renta }}</td>
+            <td>{{ r.monto_total }}</td>
+            <td>
+                <a href="{{ url_for('editar_renta', id=r.id_renta) }}">Editar</a>
+                <form action="{{ url_for('eliminar_renta', id=r.id_renta) }}" method="POST" style="display:inline;">
+                    <button type="submit" onclick="return confirm('¿Estás seguro de eliminar esta renta?')">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
