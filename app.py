@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from config import Config
 from models.db import db
 from sqlalchemy import text
+from models.db import generate_schema_sql
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -77,4 +78,5 @@ def eliminar_renta(id):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
+    generate_schema_sql()
     app.run(debug=True, host='0.0.0.0')
